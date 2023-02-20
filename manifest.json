@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Sort Booking.com By combined score",
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "short_name": "BKNG Sort Rev",
+  "version": "1",
+  "description": "You can now sort Booking.com search results using my unique algorithm.",
+  "author": "Mohamed Oun",
+  "content_scripts": [
+    {
+      "matches": ["*://*.booking.com/*"],
+      "run_at": "document_idle",
+      "js": ["content.js"]
+    }
+  ],
+  "permissions": ["tabs"]
+}
