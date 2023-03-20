@@ -27,9 +27,19 @@ const calculateHotelScore = (item) => {
     `;
     reviewsElement.appendChild(scoreElement);
     scoreElement.innerHTML = `${numberWithCommas(combinedScore)}`;
+
+    // cache the score using the URL as the key
+    localStorage.setItem(item.querySelector('a').href, combinedScore);
   }
   return combinedScore;
 };
+
+const getCachedHotelScore = (item) => {
+  const hotelUrl = item.querySelector('a').href;
+  const cachedScore = localStorage.getItem(hotelUrl);
+  return cachedScore ? parseInt(cachedScore) : null;
+};
+
 const sortBookingResults = () => {
   if (hasRun) return;
 
@@ -41,7 +51,15 @@ const sortBookingResults = () => {
     let scoreElement = item.querySelector('.score');
     if (scoreElement) {
       combinedScore = parseInt(scoreElement.innerHTML.replace(/,/g, ''));
-    } else combinedScore = calculateHotelScore(item);
+    } else {
+      // check if the score is already cached
+      const cachedScore = getCachedHotelScore(item);
+      if (cachedScore !== null) {
+        combinedScore = cachedScore;
+      } else {
+        combinedScore = calculateHotelScore(item);
+      }
+    }
 
     itemsArr.push([combinedScore, item.cloneNode(true)]);
   }
