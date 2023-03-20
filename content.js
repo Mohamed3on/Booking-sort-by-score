@@ -78,7 +78,11 @@ const appendSortingButton = () => {
   border-radius: 8px;
   box-shadow: blue 1px 1px;
   background-color: #0071c2;
-  color: white;`;
+  color: white;
+  margin-top: 10px;
+  padding: 10px;
+  font-weight: bold;
+  `;
   sortButton.innerHTML = 'Sort by score';
 
   sortingDropdownContainer.appendChild(sortButton);
