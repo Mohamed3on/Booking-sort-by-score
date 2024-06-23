@@ -5,14 +5,19 @@
     "scripts": ["background.js"]
   },
   "short_name": "BKNG Sort Rev",
-  "version": "1",
-  "description": "You can now sort Booking.com search results using my unique algorithm.",
+  "version": "1.1",
+  "description": "Sort Booking.com search results by combined score (average rating and number of reviews).",
   "author": "Mohamed Oun",
   "content_scripts": [
     {
       "matches": ["*://*.booking.com/*"],
       "run_at": "document_idle",
       "js": ["content.js"]
+    },
+    {
+      "matches": ["*://*.booking.com/hotel/*"],
+      "run_at": "document_idle",
+      "js": ["recent-reviews.js"]
     }
   ],
   "permissions": ["tabs"]

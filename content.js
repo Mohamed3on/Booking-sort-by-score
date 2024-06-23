@@ -87,8 +87,8 @@ function sortFunction(a, b) {
 }
 
 const appendSortingButton = () => {
-  const sortingDropdown = document.querySelector('[data-testid="sorters-dropdown-trigger"]');
-  const sortingDropdownContainer = sortingDropdown.parentElement;
+  const header = document.querySelector('h1');
+  const headerContainer = header.parentElement;
 
   const sortButton = document.createElement('button');
   sortButton.id = 'sort-by-score-button';
@@ -103,9 +103,9 @@ const appendSortingButton = () => {
   `;
   sortButton.innerHTML = 'Sort by score';
 
-  sortingDropdownContainer.appendChild(sortButton);
+  headerContainer.appendChild(sortButton);
 
-  sortingDropdownContainer.style = 'display: flex; justify-content: space-between;';
+  headerContainer.style = 'display: flex; justify-content: space-between; align-items: center;';
 
   sortButton.addEventListener('click', () => {
     sortBookingResults();
@@ -118,6 +118,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       document.querySelector('[data-testid="property-card"]') &&
       !document.querySelector('#sort-by-score-button')
     )
-      appendSortingButton();
+      setTimeout(() => {
+        appendSortingButton();
+      }, 1500);
   }
 });
