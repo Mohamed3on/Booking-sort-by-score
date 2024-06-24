@@ -78,19 +78,13 @@ waitForHotelId((hotelId) => {
       wrapperElement.style.margin = '10px 0'; // Added margin
 
       const titleElement = document.createElement('div');
-      titleElement.textContent = 'Recent Reviews (last 100) Summary';
+      titleElement.textContent = 'Recent Reviews Summary';
       titleElement.style.color = '#003580'; // Booking.com blue color
       titleElement.style.fontWeight = '500';
       titleElement.style.textAlign = 'left';
 
       const scoreElement = document.createElement('div');
-      scoreElement.className = 'bui-review-score__badge';
-      scoreElement.style.padding = '6px 8px';
-      scoreElement.style.fontWeight = 'bold';
-      scoreElement.style.fontSize = '12px';
-      scoreElement.style.backgroundColor = '#003580'; // Booking.com blue color
-      scoreElement.style.color = 'white';
-      scoreElement.style.borderRadius = '5px';
+      scoreElement.style.display = 'inline-block';
 
       const scoreTitleWrapper = document.createElement('div');
       scoreTitleWrapper.style.display = 'flex';
@@ -127,8 +121,41 @@ waitForHotelId((hotelId) => {
         }, 0);
 
         const percentage = ((score / filteredReviews.length) * 100).toFixed(0);
-        scoreElement.textContent = `${percentage}%`;
+
+        // Update score text and color
+        scoreElement.textContent = `${percentage}% positive`;
+        scoreElement.style.color = getColorForPercentage(percentage);
+
+        // Update the review count
+        reviewCountElement.textContent = `Based on ${filteredReviews.length} reviews`;
       };
+
+      const getColorForPercentage = (percentage) => {
+        let hue, saturation, lightness;
+        if (percentage < 50) {
+          // Dark red for low percentages
+          hue = 0;
+          saturation = 80;
+          lightness = 30;
+        } else if (percentage < 65) {
+          // Dark yellow for 50-65
+          hue = 45;
+          saturation = 80;
+          lightness = 35;
+        } else {
+          // Dark green that gets slightly brighter from 65 up
+          hue = 120;
+          saturation = 70;
+          lightness = Math.min(30 + (percentage - 65) * 0.5, 40); // Caps at 40% lightness
+        }
+        return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+      };
+
+      // Create a new element for displaying the review count
+      const reviewCountElement = document.createElement('div');
+      reviewCountElement.style.fontSize = '12px';
+      reviewCountElement.style.color = '#6B6B6B';
+      reviewCountElement.style.marginTop = '5px';
 
       calculateScore();
 
@@ -139,6 +166,7 @@ waitForHotelId((hotelId) => {
       });
 
       wrapperElement.appendChild(scoreTitleWrapper);
+      wrapperElement.appendChild(reviewCountElement); // Add reviewCountElement here
       wrapperElement.appendChild(customerTypeDropdown);
       wrapperElement.appendChild(roomTypeDropdown);
 
