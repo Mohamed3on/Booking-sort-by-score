@@ -57,9 +57,11 @@ waitForHotelId((hotelId) => {
       body: JSON.stringify(createPayload(skip)),
     }).then((response) => response.json());
 
-  Promise.all([fetchReviews(0), fetchReviews(25), fetchReviews(50), fetchReviews(75)])
+  Promise.allSettled([fetchReviews(0), fetchReviews(25), fetchReviews(50), fetchReviews(75)])
     .then((results) => {
-      const allReviews = results.flatMap((result) => result.data.reviewListFrontend.reviewCard);
+      const allReviews = results
+        .filter((result) => result.status === 'fulfilled')
+        .flatMap((result) => result.value.data.reviewListFrontend.reviewCard);
 
       const customerTypes = [
         ...new Set(allReviews.map((review) => review.bookingDetails.customerType)),

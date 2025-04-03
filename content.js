@@ -7,21 +7,22 @@ let hasRun = false;
 
 const calculateHotelScore = (item) => {
   let combinedScore = 0;
-  // get the rating count
   let reviewsElement = item.querySelector('[data-testid="review-score"]');
   if (reviewsElement) {
-    let avgRating = reviewsElement.querySelector('div').textContent;
-    let avgRatingAsPercentage = parseFloat(avgRating) / 10;
+    // Extract average rating
+    let avgRating = parseFloat(reviewsElement.textContent.match(/\d+(\.\d+)?/)[0]);
+    let avgRatingAsPercentage = avgRating / 10;
 
-    let numOfRatingsElement = reviewsElement.querySelector(
-      'div:nth-child(2) > div:nth-child(2)'
-    ).textContent;
-
-    let numOfRatings = parseInt(numOfRatingsElement.replace('Reviews', '').replace(/,/g, ''));
+    // Extract number of ratings
+    let numOfRatings = 0;
+    let match = reviewsElement.textContent.match(/(\d+(?:,\d+)*)(?:\s*real)?\s*reviews?/i);
+    if (match) {
+      numOfRatings = parseInt(match[1].replace(/,/g, ''));
+    }
 
     combinedScore = Math.round(numOfRatings * Math.pow(avgRatingAsPercentage, 15));
 
-    scoreElement = document.createElement('span');
+    let scoreElement = document.createElement('span');
     scoreElement.className = 'score';
     scoreElement.style = `font-weight:600;
     `;
