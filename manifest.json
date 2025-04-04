@@ -1,8 +1,8 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Sort Booking.com By combined score",
   "background": {
-    "scripts": ["background.js"]
+    "service_worker": "background.js"
   },
   "short_name": "BKNG Sort Rev",
   "version": "1.1",
@@ -20,5 +20,6 @@
       "js": ["recent-reviews.js"]
     }
   ],
+  "host_permissions": ["*://*.booking.com/*"],
   "permissions": ["tabs"]
 }
